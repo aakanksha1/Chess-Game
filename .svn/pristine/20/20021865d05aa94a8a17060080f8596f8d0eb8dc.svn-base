@@ -1,0 +1,28 @@
+public class King extends chessPiece{
+
+	public King (String newColor, int x, int y){
+		this.x = x;
+		this.y = y;
+		this.color = newColor;
+		
+	}
+	
+	public King(King copy){
+		this.color = copy.color;
+		this.x = copy.x;
+		this.y = copy.y;
+	}
+	
+	public boolean canMove(ChessBoard chess, int currX, int currY, int newX, int newY){
+		boolean valid = false;
+		
+		int distX = Math.abs(currX - newX);
+		int distY = Math.abs(currY - newY);
+		
+		if (distX == 1 || distY == 1){
+			valid = true;
+		}
+		
+		return valid;
+	}
+}

@@ -1,0 +1,56 @@
+/*Pawn class*/
+
+public class Pawn extends chessPiece{
+
+	//initializing Pawn
+	public Pawn (String newColor, int x, int y){
+		this.x = x;
+		this.y = y;
+		this.color = newColor;
+		this.type = "pawn";
+	}
+	
+	//copy constructor
+	public Pawn(Pawn copy){
+		this.color = copy.color;
+		this.x = copy.x;
+		this.y = copy.y;
+	}
+	
+	/* Function to determine the different ways in which the Pawn can move. Can move only 
+	 * vertically zero or one space. The first time it moves it can move two spaces vertically.
+	 * The pawn kills by moving diagonally onto the enemy piece (only time it will move diagonally
+	 * x-distance is 1 and y-distance is 2 OR x-distance is 2 and y-distance is 1.
+	 * 
+	 * @param ChessBoard chess creating instance of board
+	 * @param int currX, int currY current position of chess piece
+	 * @param int newX, int newY new position of piece if it is a legal move
+	 *  
+	 */
+	
+	public boolean canMove(ChessBoard chess, int currX, int currY, int newX, int newY){
+		boolean valid = false;
+		
+		//Checking the distance and if it is a valid position between current and new position.
+		int distX = Math.abs(currX - newX);
+		int distY = Math.abs(currY - newY);
+		
+		
+		if(distX == 0 && distY == 1){
+			valid = true;
+			return valid && chess.moveVertical(currX, currY, newX, newY);
+		}
+		
+		if ((currY == 6 && distX == 0 && distY == 2) || (currY == 1 && distX == 0 && distY == 2)){
+			valid = true;
+			return valid && chess.moveVertical(currX, currY, newX, newY);
+		}
+		
+		if(distX == 1 && distY == 1 && chess.board[newX][newY] != null){
+			valid = true;
+			return valid;
+		}
+		
+		return valid;
+	}
+}

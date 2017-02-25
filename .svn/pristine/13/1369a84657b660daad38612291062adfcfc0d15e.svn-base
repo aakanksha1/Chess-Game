@@ -1,0 +1,39 @@
+public class Pawn extends chessPiece{
+
+	public Pawn (String newColor, int x, int y){
+		this.x = x;
+		this.y = y;
+		this.color = newColor;
+	}
+	
+	public Pawn(Pawn copy){
+		this.color = copy.color;
+		this.x = copy.x;
+		this.y = copy.y;
+	}
+	
+	public boolean canMove(ChessBoard chess, int currX, int currY, int newX, int newY){
+		boolean valid = false;
+		
+		int distX = Math.abs(currX - newX);
+		int distY = Math.abs(currY - newY);
+		
+		
+		if(distX == 0 && distY == 1){
+			valid = true;
+			return valid && chess.moveVertical(currX, currY, newX, newY);
+		}
+		
+		if ((currY == 6 && distX == 0 && distY == 2) || (currY == 1 && distX == 0 && distY == 2)){
+			valid = true;
+			return valid && chess.moveVertical(currX, currY, newX, newY);
+		}
+		
+		if(distX == 1 && distY == 1 && chess.board[newX][newY] != null){
+			valid = true;
+			return valid;
+		}
+		
+		return valid;
+	}
+}

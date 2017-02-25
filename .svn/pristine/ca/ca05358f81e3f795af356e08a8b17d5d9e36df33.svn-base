@@ -1,0 +1,40 @@
+public class Queen extends chessPiece{
+
+	public Queen (String newColor, int x, int y){
+		this.x = x;
+		this.y = y;
+		this.color = newColor;
+		
+	}
+	
+	public Queen(Queen copy){
+		this.color = copy.color;
+		this.x = copy.x;
+		this.y = copy.y;
+	}
+	
+	public boolean canMove(ChessBoard chess, int currX, int currY, int newX, int newY){
+		boolean valid = false;
+		
+		int distX = Math.abs(currX - newX);
+		int distY = Math.abs(currY - newY);
+		
+		if (distX == distY){
+			valid = true;
+			return valid && chess.moveDiagonal(currX, currY, newX, newY);
+		}
+		
+		if(distX == 0 && distY != 0){
+			valid = true;
+			return valid && chess.moveHorizontal(currX, currY, newX, newY);
+		}
+		
+		if(distX != 0 && distY == 0){
+			valid = true;
+			return valid && chess.moveVertical(currX, currY, newX, newY);
+		}
+		
+		return valid;
+	}
+	
+}

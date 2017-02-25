@@ -1,0 +1,41 @@
+
+public abstract class chessPiece {
+	String color;
+	int x, y;
+
+	public chessPiece() {}
+	
+	public chessPiece(chessPiece copy){
+		this.color = copy.color;
+		this.x = copy.x;
+		this.y = copy.y;
+	}
+	
+	public String getColor(){
+		return this.color;
+	}
+	
+	public int getX(){
+		return this.x;
+	}
+	
+	public int getY(){
+		return this.y;
+	}
+	
+	public void setColor(String val){
+		this.color = val;
+	}
+	
+	public void setX(int val){
+		this.x = val;
+	}
+	
+	public void setY(int val){
+		this.y = val;
+	}
+	
+	public abstract boolean canMove(ChessBoard chess, int currX, int currY, int newX, int newY);
+}
+
+

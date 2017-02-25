@@ -1,0 +1,181 @@
+public class ChessBoard{
+	
+	public chessPiece[][] board = new chessPiece[8][8];
+	
+	//Setting Global Variables
+	public int whitePieces = 16;
+	public int blackPieces = 16; //would this turn to 8 if i have pawns as a separate variable?
+	public int pawns = 8;
+	public boolean blackTurn;
+	
+	public ChessBoard(){
+		
+		//initializing black pieces 
+		blackTurn = false;
+		board[0][7] = new Rook("black", 0, 7);
+		board[1][7] = new Knight("black", 1, 7);
+		board[2][7] = new Bishop("black", 2, 7);
+		board[3][7] = new Queen("black", 3, 7);
+		board[4][7] = new King("black", 4, 7);
+		board[5][7] = new Bishop("black", 5, 7);
+		board[6][7] = new Knight("black", 6, 7);
+		board[7][7] = new Rook("black", 7, 7);
+		
+		for(int i=0; i<pawns; i++) { 
+            board[i][6] = new Pawn("black",i,6);
+        }
+		
+		board[0][0] = new Rook("white", 0, 0);
+		board[1][0] = new Knight("white", 1, 0);
+		board[2][0] = new Bishop("white", 2, 0);
+		board[3][0] = new Queen("white", 3, 0);
+		board[4][0] = new King("white", 4, 0);
+		board[5][0] = new Bishop("white", 5, 0);
+		board[6][0] = new Knight("white", 6, 0);
+		board[7][0] = new Rook("white", 7, 0);
+		
+		for(int i=0; i<pawns; i++) { 
+            board[i][0] = new Pawn("white",i,0);
+        }
+		
+	}
+	
+	public void moveNkill(int currX, int currY, int newX, int newY){
+		
+		if(board[currX][currY] == null)
+			return;
+		
+		blackTurn = !blackTurn;
+		board[newX][newY] = board[currX][currY];
+		board[newX][newY].setX(newX);
+		board[newX][newY].setY(newY);
+		board[currX][currY] = null;
+	}
+	
+	public boolean allValidMoves(int currX, int currY, int newX, int newY){
+		
+		chessPiece current = board[currX][currY];
+		chessPiece newPiece = board[newX][newY];
+		
+		String currentColor = current.getColor();
+		String newPieceColor = "";
+		if(newPiece != null)
+			newPieceColor = newPiece.getColor();
+		
+		if(newX < 0 || newY < 0 || newX > 7 || newY > 7)
+			throw new ArrayIndexOutOfBoundsException();
+		
+		if(newPiece != null && currentColor.equals(newPieceColor))
+			return false;
+		return current.canMove(this, currX, currY, newX, newY);
+	}
+	
+	public boolean moveDiagonal(int currX, int currY, int newX, int newY){
+		boolean clear = false;
+		if(newX > currX){
+			clear = rightDiagonal(currX, currY, newX, newY);
+		}
+		
+		if(newX < currX){
+			clear = leftDiagonal(currX, currY, newX, newY);
+		}
+		
+		return clear;
+	}
+	
+	public boolean rightDiagonal(int currX, int currY, int newX, int newY){
+		if(newY > currY){
+			while(newX > currX && newY > currY){
+				if(board[currX][currY] != null){
+					return false;
+				}
+				currX++;
+				currY++;
+			}
+			return true;
+		}
+		
+		if(newY < currY){
+			while(newX > currX && newY < currY) {
+				if(board[currX][currY] != null) {
+					return false;
+				}
+				currX++;
+				currY--;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean leftDiagonal(int currX, int currY, int newX, int newY){
+		if(newY > currY){
+			while(newX < currX && newY > currY){
+				if(board[currX][currY] != null){
+					return false;
+				}
+				currX--;
+				currY++;
+			}
+			return true;
+		}
+		
+		if(newY < currY){
+			while(newX < currX && newY < currY) {
+				if(board[currX][currY] != null) {
+					return false;
+				}
+				currX--;
+				currY--;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean moveHorizontal(int currX, int currY, int newX, int newY){
+		
+		if(newX > currX){
+			for(; currX < newX; currX++){
+				if(board[currX][currY] != null)
+					return false;
+			}
+		}
+		
+		if(newX < currX){
+			for(; currX > newX; currX--){
+				if(board[currX][currY] != null)
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean moveVertical(int currX, int currY, int newX, int newY){
+		
+		if(newY > currY){
+			for(; currY < newY; currY++){
+				if(board[currX][currY] != null)
+					return false;
+			}
+		}
+		
+		if(newY < currY){
+			for(; currY > newY; currY--){
+				if(board[currX][currY] != null)
+					return false;
+			}
+		}
+		return true;
+	}
+	
+	public chessPiece getPiece(int x, int y){
+		return board[x][y];
+	}
+	
+	/*public void setPiece(chessPiece p, int x, int y){
+		chessPiece p1 = new chessPiece(p);
+		board[x][y] = p;
+	}*/
+	
+}
